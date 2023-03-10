@@ -26,32 +26,6 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('login',[LoginController::class, 'index'])->name('login');
 
-Route::get('/home',[LayoutController::class,'index'])->middleware('auth');
-
-Route::get('/menu1',[LayoutController::class,'hal1'])->middleware('auth');
-
-Route::get('/menu2',[LayoutController::class,'hal2'])->middleware('auth');
-
-Route::put('/dataPasien/{id}',[dataPasienController::class,'update']);
-
-Route::put('/dataPasien/{id}',[dataPasienController::class,'create']);
-
-Route::get('/dataPasien/{id}',[dataPasienController::class,'destroy']);
-
-
-Route::group(['middleware'=>['cekLevel:1']],function(){
-    Route::get('/menu1',[LayoutController::class,'hal1'])->middleware('auth'); 
-});
-
-Route::group(['middleware'=>['cekLevel:2']],function(){
-    Route::get('/menu1',[LayoutController::class,'hal1'])->middleware('auth'); 
-});
-
-Route::group(['middleware'=>[,'cekLevel:1,2']],function(){
-    Route::resource('/dataPasien', dataPasienController::class);
-    Route::get('/menu2',[LayoutController::class,'hal2'])->middleware('auth');  
-});
-
 Route::controller(LoginController::class)->group(function(){
     Route::get('login','index')->name('login');
     Route::post('login/proses', 'proses');
@@ -67,3 +41,28 @@ Route::group(['middleware'=>['auth']],function(){
         Route::resource('cPasien', cPasien::class);
     });     
 });
+
+Route::group(['middleware'=>['cekLevel:1']],function(){
+    Route::get('/menu1',[LayoutController::class,'hal1'])->middleware('auth'); 
+});
+
+Route::group(['middleware'=>['cekLevel:2']],function(){
+    Route::get('/menu1',[LayoutController::class,'hal1'])->middleware('auth'); 
+});
+
+Route::group(['middleware'=>['cekLevel:1,2']],function(){
+    Route::resource('/dataPasien', dataPasienController::class);
+    Route::get('/menu2',[LayoutController::class,'hal2'])->middleware('auth');  
+});
+
+Route::get('/home',[LayoutController::class,'index'])->middleware('auth');
+
+Route::get('/menu1',[LayoutController::class,'hal1'])->middleware('auth');
+
+Route::get('/menu2',[LayoutController::class,'hal2'])->middleware('auth');
+
+Route::put('/dataPasien/{id}',[dataPasienController::class,'update']);
+
+Route::put('/dataPasien/{id}',[dataPasienController::class,'create']);
+
+Route::get('/dataPasien/{id}',[dataPasienController::class,'destroy']);
